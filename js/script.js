@@ -1,7 +1,12 @@
 // Ajout des évènements
-document.getElementById("pierre").addEventListener("click", () => { jouer(0); });
-document.getElementById("feuille").addEventListener("click", () => { jouer(1); });
-document.getElementById("ciseaux").addEventListener("click", () => { jouer(2); });
+document.getElementById("pierre").addEventListener("click", () => { jouer(PIERRE); });
+document.getElementById("feuille").addEventListener("click", () => { jouer(FEUILLE); });
+document.getElementById("ciseaux").addEventListener("click", () => { jouer(CISEAUX); });
+
+// Définitions constantes
+const PIERRE = 0;
+const FEUILLE = 1;
+const CISEAUX = 2;
 
 /**
  * Joue un coup aléatoire
@@ -18,18 +23,27 @@ function coupAleatoire() {
  * @returns resultat: string
  */
 function resultat(coupJoueur1, coupJoueur2) {
-    if (coupJoueur1 < 0 || coupJoueur1 > 2) {
+    if (coupJoueur1 < PIERRE || coupJoueur1 > CISEAUX) {
         return "coup invalide joueur 1";
-    } else if (coupJoueur2 < 0 || coupJoueur2 > 2) {
+    } else if (coupJoueur2 < PIERRE || coupJoueur2 > CISEAUX) {
         return "coup invalide joueur 2";
     }
 
     if (coupJoueur1 == coupJoueur2) {
         return "egalitée";
-    } else if (coupJoueur1 > coupJoueur2 && coupJoueur1 != 2) {
+
+    } else  if (coupJoueur1 > coupJoueur2) {
+        if (coupJoueur1 === CISEAUX && coupJoueur2 === PIERRE) {
+            return "perdu";
+        }
         return "gagné";
+
     } else {
+        if (coupJoueur1 === PIERRE && coupJoueur2 === CISEAUX) {
+            return "gagné";
+        }
         return "perdu";
+
     }
 }
 
@@ -40,9 +54,9 @@ function resultat(coupJoueur1, coupJoueur2) {
  */
 function convertirNombreCoup(nombre) {
     switch (nombre) {
-        case 0: return "pierre";
-        case 1: return "feuille";
-        case 2: return "ciseaux";
+        case PIERRE: return "pierre";
+        case FEUILLE: return "feuille";
+        case CISEAUX: return "ciseaux";
         default: return "coup invalide";
     }
 }
@@ -57,5 +71,4 @@ function jouer(coup) {
     document.getElementById("joueur").textContent = `Joueur : ${convertirNombreCoup(coup)}`;
     document.getElementById("robot").textContent = `Robot : ${convertirNombreCoup(coupAdverse)}`;
     document.getElementById("resultat").textContent = `Resultat : ${resultat(coup, coupAdverse)}`;
-    document.getElementById("test").textContent = `Nombre de fois ${i}`;
 }
